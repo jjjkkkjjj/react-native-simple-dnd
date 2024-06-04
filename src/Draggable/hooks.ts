@@ -38,6 +38,18 @@ export const useDraggable = <T, U extends object>(
                 (prevInsideParams) =>
                   eventHandlers?.onCoverDroppableComponentForInsideParams?.(
                     prevInsideParams,
+                    draggedItem,
+                    droppedItem,
+                  ),
+              );
+            },
+            (draggedItem, droppedItem) => {
+              setManagedInsideParams(
+                (prevInsideParams) =>
+                  eventHandlers?.onUncoverDroppableComponentForInsideParams?.(
+                    prevInsideParams,
+                    draggedItem,
+                    droppedItem,
                   ),
               );
             },
@@ -47,12 +59,6 @@ export const useDraggable = <T, U extends object>(
           // console.log('Droppable');
         } else {
           // console.log('Not Droppable');
-          setManagedInsideParams(
-            (prevInsideParams) =>
-              eventHandlers?.onUncoverDroppableComponentForInsideParams?.(
-                prevInsideParams,
-              ),
-          );
         }
         Animated.event([null, { dx: pan.x, dy: pan.y }], {
           useNativeDriver: false,

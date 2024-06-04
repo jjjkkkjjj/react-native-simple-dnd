@@ -165,7 +165,8 @@ export const useDragAndDropArea = () => {
     y: number,
     mode: 'move' | 'release',
     draggedItem?: T,
-    callback?: (_draggedItem?: T, _droppedItem?: any) => void,
+    droppableCallback?: (_draggedItem?: T, _droppedItem?: any) => void,
+    unDroppableCallback?: (_draggedItem?: T, _droppedItem?: any) => void,
   ) => {
     // 関数内だとStateが更新されないので対症療法
     // https://stackoverflow.com/questions/71447566/react-state-variables-not-updating-in-function
@@ -197,10 +198,12 @@ export const useDragAndDropArea = () => {
               const insideParams =
                 value.onCoveredByDraggableComponentForInsideParams(
                   value.insideParams,
+                  draggedItem,
+                  droppedItem,
                 );
               value.insideParamsCallback(insideParams);
             }
-            callback?.(draggedItem, droppedItem);
+            droppableCallback?.(draggedItem, droppedItem);
             // console.log('isDroppable', draggableEventHandlersRef.current);
             // draggableEventHandlersRef.current[
             //   draggableKey
@@ -208,7 +211,7 @@ export const useDragAndDropArea = () => {
             break;
           case 'release':
             value?.onDroppedDraggableComponent?.(draggedItem, droppedItem);
-            callback?.(draggedItem, droppedItem);
+            droppableCallback?.(draggedItem, droppedItem);
             break;
         }
       });
@@ -219,10 +222,13 @@ export const useDragAndDropArea = () => {
           const insideParams =
             value.onUncoveredByDraggableComponentForInsideParams(
               value.insideParams,
+              draggedItem,
+              undefined,
             );
           value.insideParamsCallback(insideParams);
         }
       });
+      unDroppableCallback?.(draggedItem, undefined);
     }
 
     return droppable;

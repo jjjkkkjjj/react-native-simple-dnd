@@ -45,9 +45,17 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
 
 export interface DraggableEventHandlers<T, U extends object> {
   /** DroppableComponent上を通った場合に呼ばれる関数 */
-  onCoverDroppableComponentForInsideParams?: (_insideParams?: U) => U;
+  onCoverDroppableComponentForInsideParams?: (
+    _insideParams?: U,
+    _draggedItem?: T,
+    _droppedItem?: T,
+  ) => U;
   /** DroppableComponent上を通らなかった場合に呼ばれる関数 */
-  onUncoverDroppableComponentForInsideParams?: (_insideParams?: U) => U;
+  onUncoverDroppableComponentForInsideParams?: (
+    _insideParams?: U,
+    _draggedItem?: T,
+    _droppedItem?: T,
+  ) => U;
   /** DroppableComponent上を通った場合に呼ばれる関数 */
   onCoverDroppableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
   /** DroppableComponent上でReleaseした際に呼ばれる関数 */

@@ -52,9 +52,17 @@ export interface DroppableLayoutInformation {
 
 export interface DroppableEventHandlers<T, U extends object> {
   /** DraggableComponentが通った場合に呼ばれる関数 */
-  onCoveredByDraggableComponentForInsideParams?: (_insideParams?: U) => U;
+  onCoveredByDraggableComponentForInsideParams?: (
+    _insideParams?: U,
+    _draggedItem?: T,
+    _droppedItem?: T,
+  ) => U;
   /** DraggableComponentが通った場合に呼ばれる関数 */
-  onUncoveredByDraggableComponentForInsideParams?: (_insideParams?: U) => U;
+  onUncoveredByDraggableComponentForInsideParams?: (
+    _insideParams?: U,
+    _draggedItem?: T,
+    _droppedItem?: T,
+  ) => U;
   /** DraggableComponentが通った場合に呼ばれる関数 */
   onCoveredByDraggableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
   /** DraggableComponentがReleaseされた際に呼ばれる関数 */

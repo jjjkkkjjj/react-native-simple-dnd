@@ -60,7 +60,8 @@ export interface DragAndDropAreaType<T, U extends object> {
     _y: number,
     _mode: 'move' | 'release',
     _draggedItem?: T,
-    _callback?: (_draggedItem?: T, _droppedItem?: T) => void,
+    _droppableCallback?: (_draggedItem?: T, _droppedItem?: T) => void,
+    _unDroppableCallback?: (_draggedItem?: T, _droppedItem?: T) => void,
   ) => boolean;
   /** DroppableのLayout情報を登録する関数 */
   registerDroppableLayoutInformation: (
