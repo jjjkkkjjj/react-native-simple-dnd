@@ -19,6 +19,10 @@ export interface DragAndDropSharedType<T, U extends object> {
   x?: number;
   /** y座標（Parentに対して） */
   y?: number;
+  /** X座標の逆（左）方向を正にするか */
+  reverseX?: boolean;
+  /** Y座標の逆（上）方向を正にするか */
+  reverseY?: boolean;
   /** zインデックス */
   zIndex?: number;
   /** ユニークキー */

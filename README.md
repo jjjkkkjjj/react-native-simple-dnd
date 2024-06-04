@@ -2,7 +2,7 @@
 
 The very simple Drag and Drop library in React Native.
 
-![demo](./assets/demo.gif?raw=true)
+<!-- ![demo](./assets/demo.gif?raw=true) -->
 
 ## Installation
 

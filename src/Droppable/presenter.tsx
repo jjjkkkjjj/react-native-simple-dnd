@@ -8,6 +8,8 @@ export const Droppable = <T, U extends object>(props: DroppableProps<T, U>) => {
     containerStyle,
     x,
     y,
+    reverseX,
+    reverseY,
     zIndex,
     viewRef,
     managedInsideParams,
@@ -22,8 +24,10 @@ export const Droppable = <T, U extends object>(props: DroppableProps<T, U>) => {
         {
           zIndex: zIndex ?? 5,
           position: x === undefined && y === undefined ? undefined : 'absolute',
-          top: y,
-          left: x,
+          top: !reverseY ? y : undefined,
+          bottom: reverseY ? y : undefined,
+          left: !reverseX ? x : undefined,
+          right: reverseX ? x : undefined,
         },
         containerStyle,
       ]}

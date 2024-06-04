@@ -8,6 +8,8 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
     containerStyle,
     x,
     y,
+    reverseX,
+    reverseY,
     zIndex,
     pan,
     panResponder,
@@ -25,8 +27,10 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
             zIndex: zIndex ?? 10,
             position:
               x === undefined && y === undefined ? undefined : 'absolute',
-            top: y,
-            left: x,
+            top: !reverseY ? y : undefined,
+            bottom: reverseY ? y : undefined,
+            left: !reverseX ? x : undefined,
+            right: reverseX ? x : undefined,
           },
           containerStyle,
         ]}
