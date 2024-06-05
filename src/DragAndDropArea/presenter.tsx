@@ -13,35 +13,35 @@ export const DragAndDropArea = (props: DragAndDropAreaProps) => {
 };
 
 export interface DragAndDropSharedType<T, U extends object> {
-  /** コンテナのStyle */
+  /** The container style */
   containerStyle?: StyleProp<ViewStyle>;
-  /** x座標（Parentに対して） */
+  /** The x coordinates relative to parent */
   x?: number;
-  /** y座標（Parentに対して） */
+  /** The y coordinates relative to parent */
   y?: number;
-  /** X座標の逆（左）方向を正にするか */
+  /** Whether the opposite x direction (left) is positive or not */
   reverseX?: boolean;
-  /** Y座標の逆（上）方向を正にするか */
+  /** Whether the opposite y direction (up) is positive or not */
   reverseY?: boolean;
-  /** zインデックス */
+  /** The z index */
   zIndex?: number;
-  /** ユニークキー */
+  /** The uniqui key to manage the component */
   keyValue: string;
-  /** 任意の管理値 */
+  /** The custom item */
   item?: T;
-  /** 内部のパラメータ */
+  /** The custom inside parameters */
   insideParams?: U;
-  /** 表示コンポーネント */
+  /** The child component or functional component */
   children?: ((_insideParams?: U) => React.ReactNode) | React.ReactNode;
 }
 
 export interface DragAndDropAreaType<T, U extends object> {
-  /** Droppableの描画情報を管理 */
+  /** The layout information for droppable component */
   droppableLayoutInformation: {
     /** Droppableのキー */
     [key: string]: DroppableLayoutInformation;
   };
-  /** DroppableのEventHandlerを管理 */
+  /** The event handlers for droppable component */
   droppableEventHandlers: {
     [key: string]: {
       item?: T;
@@ -49,11 +49,11 @@ export interface DragAndDropAreaType<T, U extends object> {
       insideParamsCallback: (_insideParams?: U) => U;
     } & DroppableEventHandlers<T, U>;
   };
-  // /** DraggableのEventHandlerを管理 */
+  // /** he event handlers for draggable component */
   // draggableEventHandlers: {
   //   [key: string]: DraggableEventHandlers;
   // };
-  /** Drop可能かを返す関数 */
+  /** The function to check if the draggable item is droppable or not */
   isDroppable: (
     _draggableKey: string,
     _x: number,
@@ -63,12 +63,12 @@ export interface DragAndDropAreaType<T, U extends object> {
     _droppableCallback?: (_draggedItem?: T, _droppedItem?: T) => void,
     _unDroppableCallback?: (_draggedItem?: T, _droppedItem?: T) => void,
   ) => boolean;
-  /** DroppableのLayout情報を登録する関数 */
+  /** The function to register the layout information for the droppable component */
   registerDroppableLayoutInformation: (
     _keyValue: string,
     _information: DroppableLayoutInformation,
   ) => void;
-  /** DraggableのEventHandlerを登録する関数 */
+  /** The function to register the event handlers for the droppable component */
   registerDroppableEventHandlers: (
     _keyValue: string,
     _eventHandlers: Partial<DroppableEventHandlers<T, U>>,
@@ -76,7 +76,7 @@ export interface DragAndDropAreaType<T, U extends object> {
     _item?: T,
     _insideParams?: U,
   ) => void;
-  // /** DraggableのEventHandlerを登録する関数 */
+  // /** The function to register the event handlers for the draggable component */
   // registerDraggableEventHandlers: (
   //   _keyValue: string,
   //   _eventHandlers: Partial<DraggableEventHandlers>,
@@ -84,7 +84,7 @@ export interface DragAndDropAreaType<T, U extends object> {
 }
 
 export interface DragAndDropAreaContainerProps {
-  /** 表示コンポーネント */
+  /** The children */
   children?: React.ReactNode;
 }
 

@@ -8,13 +8,13 @@ import { useDraggable } from './hooks';
 const DraggableContainer = <T, U extends object>(
   props: DraggableContainerProps<T, U>,
 ) => {
-  const { pan, panResponder, managedInsideParams } = useDraggable(
+  const { pan, panResponder, dragging, managedInsideParams } = useDraggable(
     props.keyValue,
     props.eventHandlers,
     props.item,
     props.insideParams,
   );
-  // ChildrenにDroppableがないか確認
+  // Check if the droppable exists in the Children
   React.Children.toArray(
     typeof props.children === 'function'
       ? props.children(undefined)
@@ -44,6 +44,7 @@ const DraggableContainer = <T, U extends object>(
       {...props}
       pan={pan}
       panResponder={panResponder}
+      dragging={dragging}
       managedInsideParams={managedInsideParams}
     />
   );

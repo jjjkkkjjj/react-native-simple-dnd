@@ -40,47 +40,47 @@ export const Droppable = <T, U extends object>(props: DroppableProps<T, U>) => {
 };
 
 export interface DroppableLayoutInformation {
-  /** X座標値 */
+  /** The x coordinates relative to parent */
   x: number;
-  /** Y座標値 */
+  /** The y coordinates relative to parent */
   y: number;
-  /** 幅 */
+  /** The width of this component */
   width: number;
-  /** 高さ */
+  /** The height of this component */
   height: number;
 }
 
 export interface DroppableEventHandlers<T, U extends object> {
-  /** DraggableComponentが通った場合に呼ばれる関数 */
+  /** The function for custom inside parameters when the draggable component covers this component */
   onCoveredByDraggableComponentForInsideParams?: (
     _insideParams?: U,
     _draggedItem?: T,
     _droppedItem?: T,
   ) => U;
-  /** DraggableComponentが通った場合に呼ばれる関数 */
+  /** The function for custom inside parameters when the draggable component UNcovers this component */
   onUncoveredByDraggableComponentForInsideParams?: (
     _insideParams?: U,
     _draggedItem?: T,
     _droppedItem?: T,
   ) => U;
-  /** DraggableComponentが通った場合に呼ばれる関数 */
+  /** The function when the draggable component covers this component */
   onCoveredByDraggableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
-  /** DraggableComponentがReleaseされた際に呼ばれる関数 */
+  /** The function when the draggable component is dropped on this component */
   onDroppedDraggableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
 }
 
 export interface DroppableContainerProps<T, U extends object>
   extends DragAndDropSharedType<T, U> {
-  /** EventHandler */
+  /** EventHandlers */
   eventHandlers?: DroppableEventHandlers<T, U>;
 }
 
 export interface DroppableProps<T, U extends object>
   extends DroppableContainerProps<T, U> {
-  /** ViewのRef */
+  /** The ref object of the container View */
   viewRef: React.RefObject<View>;
-  /** 描画された際に呼ばれる関数 */
+  /** The function when this component is rendered */
   onLayout: (_e: LayoutChangeEvent) => void;
-  /** 更新された内部のパラメータ */
+  /** The updated custom inside parameters */
   managedInsideParams?: U;
 }

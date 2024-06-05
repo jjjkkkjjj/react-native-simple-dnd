@@ -13,6 +13,7 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
     zIndex,
     pan,
     panResponder,
+    dragging,
     managedInsideParams,
     children,
   } = props;
@@ -24,7 +25,7 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
         style={[
           {
             transform: pan.getTranslateTransform(),
-            zIndex: zIndex ?? 10,
+            zIndex: (zIndex ?? 10) + Number(dragging) * 5,
             position:
               x === undefined && y === undefined ? undefined : 'absolute',
             top: !reverseY ? y : undefined,
@@ -44,36 +45,38 @@ export const Draggable = <T, U extends object>(props: DraggableProps<T, U>) => {
 };
 
 export interface DraggableEventHandlers<T, U extends object> {
-  /** DroppableComponent上を通った場合に呼ばれる関数 */
+  /** The function for custom inside parameters when this component covers the droppable component */
   onCoverDroppableComponentForInsideParams?: (
     _insideParams?: U,
     _draggedItem?: T,
     _droppedItem?: T,
   ) => U;
-  /** DroppableComponent上を通らなかった場合に呼ばれる関数 */
+  /** The function for custom inside parameters when this component UNcovers the droppable component */
   onUncoverDroppableComponentForInsideParams?: (
     _insideParams?: U,
     _draggedItem?: T,
     _droppedItem?: T,
   ) => U;
-  /** DroppableComponent上を通った場合に呼ばれる関数 */
+  /** The function when this component covers the droppable component */
   onCoverDroppableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
-  /** DroppableComponent上でReleaseした際に呼ばれる関数 */
+  /** The function when this component is dropped on the droppable component */
   onDropOverDroppableComponent?: (_draggedItem?: T, _droppedItem?: T) => void;
 }
 
 export interface DraggableContainerProps<T, U extends object>
   extends DragAndDropSharedType<T, U> {
-  /** EventHandler */
+  /** EventHandlers */
   eventHandlers?: DraggableEventHandlers<T, U>;
 }
 
 export interface DraggableProps<T, U extends object>
   extends DraggableContainerProps<T, U> {
-  /** 座標値 */
+  /** the coordinates */
   pan: Animated.ValueXY;
-  /** EventHandler諸々 */
+  /** EventHandlers */
   panResponder: PanResponderInstance;
-  /** 更新された内部のパラメータ */
+  /** whether to be dragging or not */
+  dragging: boolean;
+  /** The updated custom inside parameters */
   managedInsideParams?: U;
 }

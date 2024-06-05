@@ -11,6 +11,7 @@ export const useDraggable = <T, U extends object>(
   insideParams?: U,
 ) => {
   const [value, setValue] = React.useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = React.useState(false);
   const [managedInsideParams, setManagedInsideParams] = React.useState<
     U | undefined
   >(insideParams);
@@ -65,10 +66,12 @@ export const useDraggable = <T, U extends object>(
         })(e, gesture);
       },
       onPanResponderGrant: () => {
+        setDragging(true);
         pan.setOffset({ x: value.x, y: value.y });
         pan.setValue({ x: 0, y: 0 });
       },
       onPanResponderRelease: (e) => {
+        setDragging(false);
         // absolute
         console.log('Released', e.nativeEvent.pageX, e.nativeEvent.pageY);
         // relative
@@ -116,5 +119,5 @@ export const useDraggable = <T, U extends object>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { value, pan, panResponder, managedInsideParams };
+  return { value, pan, panResponder, dragging, managedInsideParams };
 };

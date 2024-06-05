@@ -15,16 +15,16 @@ export const useDroppable = <U extends object>(insideParams?: U) => {
     });
 
   /**
-   * Droppableの描画情報を変更する処理
-   * @param newInformation 新しい描画情報
+   * The function that the layout information is changed
+   * @param newInformation the new layout information
    */
   const changeInformation = (newInformation: DroppableLayoutInformation) => {
     setInformation(newInformation);
   };
 
   /**
-   * 内部パラメータを変更する処理
-   * @param insideParams 内部パラメータ
+   * The function that the custom inside parameters is changes
+   * @param insideParams the custom paramters
    */
   const changeManagedInsideParams = (insideParams) => {
     setManagedInsideParams(insideParams);

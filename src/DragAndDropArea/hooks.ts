@@ -20,7 +20,6 @@ export const useDragAndDrop = () => {
 
 export const useDragAndDropAreaAdmin = () => {
   const droppableLayoutInformationRef = React.useRef<{
-    /** Droppableのキー */
     [key: string]: DroppableLayoutInformation;
   }>({});
   const droppableLayoutInformation = React.useMemo(
@@ -28,7 +27,6 @@ export const useDragAndDropAreaAdmin = () => {
     [droppableLayoutInformationRef],
   );
   const droppableEventHandlersRef = React.useRef<{
-    /** Droggableのキー */
     [key: string]: {
       item?: any;
       insideParams?: any;
@@ -49,11 +47,10 @@ export const useDragAndDropAreaAdmin = () => {
 };
 
 /**
- * 管理用Hooks
+ * The hooks for admin
  */
 export const useDragAndDropArea = () => {
   const droppableLayoutInformationRef = React.useRef<{
-    /** Droppableのキー */
     [key: string]: DroppableLayoutInformation;
   }>({});
   const droppableLayoutInformation = React.useMemo(
@@ -61,7 +58,6 @@ export const useDragAndDropArea = () => {
     [droppableLayoutInformationRef],
   );
   const droppableEventHandlersRef = React.useRef<{
-    /** Droggableのキー */
     [key: string]: {
       item?: any;
       insideParams?: any;
@@ -85,9 +81,9 @@ export const useDragAndDropArea = () => {
   // );
 
   /**
-   * Droppableの描画情報を登録する関数
-   * @param keyValue ユニークキー
-   * @param information 描画情報
+   * The function to register the layout information for the droppable component
+   * @param keyValue The unique key
+   * @param information The layout information
    */
   const registerDroppableLayoutInformation = (
     keyValue: string,
@@ -102,11 +98,11 @@ export const useDragAndDropArea = () => {
   };
 
   /**
-   * DroppableのEventHandlerを登録する関数
-   * @param keyValue ユニークキー
-   * @param eventHandlers 任意のEventHandler
-   * @param item 任意の管理値
-   * @param insideParams 内部のパラメータ
+   * The function to register the event handlers for the droppable component
+   * @param keyValue The unique key
+   * @param eventHandlers The event handlers
+   * @param item The custom item
+   * @param insideParams The custom inside paramters
    */
   const registerDroppableEventHandlers = <T, U extends object>(
     keyValue: string,
@@ -129,9 +125,9 @@ export const useDragAndDropArea = () => {
   };
 
   // /**
-  //  * DraggableのEventHandlerを登録する関数
-  //  * @param keyValue ユニークキー
-  //  * @param eventHandlers 任意のEventHandler
+  //  * The function to register the event handlers for the draggable component
+  //  * @param keyValue The unique key
+  //  * @param eventHandlers The event handlers
   //  */
   // const registerDraggableEventHandlers = (
   //   keyValue: string,
@@ -152,12 +148,12 @@ export const useDragAndDropArea = () => {
   // };
 
   /**
-   * Drop可能かを判定する関数
-   * @param draggableKey Draggbleのユニークキー
-   * @param x X座標値
-   * @param y Y座標値
-   * @param mode 呼び出しタイミング．
-   * @returns Drop可能かどうか
+   * The function to check if the draggable item is droppable or not
+   * @param draggableKey The unique key of the draggable item
+   * @param x The x coordinate
+   * @param y The y coordinate
+   * @param mode The mode
+   * @returns Whether the draggable item is droppable or not
    */
   const isDroppable = <T>(
     draggableKey: string,
@@ -168,7 +164,7 @@ export const useDragAndDropArea = () => {
     droppableCallback?: (_draggedItem?: T, _droppedItem?: any) => void,
     unDroppableCallback?: (_draggedItem?: T, _droppedItem?: any) => void,
   ) => {
-    // 関数内だとStateが更新されないので対症療法
+    // The state will not be updated in the function. To avoid this, workaround is using the ref object
     // https://stackoverflow.com/questions/71447566/react-state-variables-not-updating-in-function
     const droppableLayoutInformation = droppableLayoutInformationRef.current;
 
