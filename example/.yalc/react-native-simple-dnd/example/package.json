@@ -13,7 +13,7 @@
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "react-native-simple-dnd": "file:.yalc/react-native-simple-dnd",
+    "react-native-simple-dnd": "file:..",
     "recoil": "^0.7.7"
   },
   "devDependencies": {

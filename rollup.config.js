@@ -11,6 +11,7 @@ const autoprefixer = require('autoprefixer');
 const conf = [
   {
     input: 'src/index.ts',
+    cache: false,
     output: [
       {
         dir: `dist/commonjs`,
@@ -52,6 +53,7 @@ const conf = [
   },
   {
     input: 'src/index.ts',
+    cache: false,
     output: [
       {
         dir: `dist/es`,

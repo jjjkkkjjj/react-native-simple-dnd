@@ -23,12 +23,8 @@ All you have to do is enclose `<DnDArea>`, `<DnDable>`!
 ## Development
 
 ```bash
-npm install -g yalc
-yalc publish react-native-simple-dnd
+npm pack
 cd example
-yalc add 
 npm install -S
 npx expo start
 ```
-
-Referece: [Stackoverflow](https://stackoverflow.com/questions/44061155/react-native-npm-link-local-dependency-unable-to-resolve-module)
