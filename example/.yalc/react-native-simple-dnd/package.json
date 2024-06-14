@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-dnd",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
@@ -27,5 +27,5 @@
     "recoil": "^0.7.7",
     "rollup-plugin-typescript2": "^0.36.0"
   },
-  "yalcSig": "a6ade39ce287023090733daa3f20c1fe"
+  "yalcSig": "abe9aa99c97aa475156ce0cdce7220d6"
 }

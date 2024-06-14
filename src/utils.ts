@@ -26,7 +26,7 @@ export const checkDroppable = (
     _droppableKeyValue: string,
     _droppableInfo: any,
   ) => void,
-) => {
+): boolean => {
   const draggedTopLeft = {
     x: point.x - dragRelativeOffset.x,
     y: point.y - dragRelativeOffset.y,
@@ -36,9 +36,9 @@ export const checkDroppable = (
     y: point.y - dragRelativeOffset.y + layout.height,
   };
   // Check Overlap
-  Object.keys(droppableInformation).forEach((keyValue) => {
+  const droppables = Object.keys(droppableInformation).map((keyValue) => {
     if (keyValue === draggedKeyValue) {
-      return;
+      return false;
     }
     const layout: LayoutRectangle = droppableInformation[keyValue].layout;
     const droppableInfo = droppableInformation[keyValue];
@@ -65,5 +65,9 @@ export const checkDroppable = (
     } else {
       unDroppableCallbacks?.(keyValue, droppableInfo);
     }
+
+    return droppable;
   });
+
+  return droppables.some(Boolean);
 };

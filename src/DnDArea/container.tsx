@@ -2,7 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 
 import { DnDArea, DnDAreaContainerProps } from './presenter';
-import { useDnDAreaAdmin, useDnDArea } from './hooks';
+import { useDnDAreaAdmin, useDnDArea, useDragAndDrop } from './hooks';
 
 const DnDAreaContainer = (props: DnDAreaContainerProps) => {
   useDnDAreaAdmin();
@@ -16,8 +16,9 @@ const DnDAreaContainer = (props: DnDAreaContainerProps) => {
 
 const Wrapper = (props) => {
   useDnDArea();
+  const { reloadLayout } = useDragAndDrop();
 
-  return <DnDArea {...props} />;
+  return <DnDArea {...props} onLayout={() => reloadLayout()} />;
 };
 
 export default DnDAreaContainer;

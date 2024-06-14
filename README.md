@@ -18,6 +18,8 @@ All you have to do is enclose `<DnDArea>`, `<DnDable>`!
 
 ```
 
+For more details,
+
 ## Props
 
 ## Development
@@ -29,6 +31,13 @@ cd example
 yalc add 
 npm install -S
 npx expo start
+```
+
+- When the codes are updated,
+
+```bash
+npm run build
+yalc push
 ```
 
 Referece: [Stackoverflow](https://stackoverflow.com/questions/44061155/react-native-npm-link-local-dependency-unable-to-resolve-module)

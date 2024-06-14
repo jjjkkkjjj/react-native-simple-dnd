@@ -15,6 +15,7 @@ export const DnDable = <T, U extends object>(props: DnDableProps<T, U>) => {
     reverseX,
     reverseY,
     zIndex,
+    parentkeyValue,
     children,
     viewRef,
     updatedStyleParams,
@@ -42,7 +43,7 @@ export const DnDable = <T, U extends object>(props: DnDableProps<T, U>) => {
         left: !reverseX ? x : undefined,
         right: reverseX ? x : undefined,
         // avoid overlapping during dragging
-        zIndex: (zIndex ?? 10) + Number(dragging) * 15,
+        zIndex: (zIndex ?? 10) + Number(dragging) * 15 + Number(parentkeyValue !== undefined) * 5,
       }}
       onLayout={onLayout}
     >

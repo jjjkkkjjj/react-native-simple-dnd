@@ -1,15 +1,21 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, LayoutChangeEvent } from 'react-native';
 
 export const DnDArea = (props: DnDAreaProps) => {
-  const { children } = props;
-  return <View style={{ flex: 1 }}>{children}</View>;
+  const { children, onLayout } = props;
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayout}>
+      {children}
+    </View>
+  );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DnDAreaContainerProps {
   /** Child components */
   children?: React.ReactNode;
 }
 
-export interface DnDAreaProps extends DnDAreaContainerProps {}
+export interface DnDAreaProps extends DnDAreaContainerProps {
+  /** The function when this component is rendered */
+  onLayout?: (_e: LayoutChangeEvent) => void;
+}

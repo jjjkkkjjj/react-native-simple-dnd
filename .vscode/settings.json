@@ -1,0 +1,19 @@
+{
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+  
+    // prettier
+    "eslint.workingDirectories": ["./"],
+    "eslint.enable": true,
+    "eslint.nodePath": "./",
+    "eslint.options": {
+      "overrideConfigFile": ".eslintrc.json"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "prettier.prettierPath": "./node_modules/prettier/index.cjs",
+    "editor.formatOnSave": true
+  }
+  

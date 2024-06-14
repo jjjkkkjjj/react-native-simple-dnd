@@ -28,6 +28,33 @@ const DnDableContainer = <T, U extends object>(
   const [droppableInformation, setDroppableInformation] = useDroppable();
   const [draggableInformation, setDraggableInformation] = useDraggable();
   const { reloadLayoutSwitch } = useReloadLayout();
+  const startShouldSetHandler = React.useCallback(
+    (e: GestureResponderEvent, _gesture: PanResponderGestureState): boolean => {
+      const { pageX: x, pageY: y } = e.nativeEvent;
+      const layout: LayoutRectangle =
+        droppableInformation[props.keyValue].layout;
+      // TODO: Support overlapped children
+      // Current implementation doesn't support overlapped DnDable children
+
+      // Check if this component is child or not first;
+      // if it is child;
+      //  if droppable component exists, then it is allowed to drag
+      // if it is parent
+      //  if droppable component doesn't exist, then it is allowed to drag
+      return (
+        Boolean(props.parentkeyValue) ||
+        !checkDroppable(
+          props.keyValue,
+          { x, y },
+          dragRelativeOffset,
+          layout,
+          droppableInformation,
+        )
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [droppableInformation, dragRelativeOffset],
+  );
   const grantEventHandler = React.useCallback(
     (_e: GestureResponderEvent, _gesture: PanResponderGestureState) => {
       pan.setOffset({ x: offset.x, y: offset.y });
@@ -70,11 +97,11 @@ const DnDableContainer = <T, U extends object>(
       }
       // Set Drag offset relative to DnDable
       const { pageX: x, pageY: y } = e.nativeEvent;
-      const layoutInformation: LayoutRectangle =
+      const layout: LayoutRectangle =
         droppableInformation[props.keyValue].layout;
       setDragRelativeOffset(() => ({
-        x: x - layoutInformation.x,
-        y: y - layoutInformation.y,
+        x: x - layout.x,
+        y: y - layout.y,
       }));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,7 +198,6 @@ const DnDableContainer = <T, U extends object>(
           });
         },
       );
-
       Animated.event([null, { dx: pan.x, dy: pan.y }], {
         useNativeDriver: false,
       })(e, gesture);
@@ -222,7 +248,7 @@ const DnDableContainer = <T, U extends object>(
   const panResponder = React.useMemo(
     () =>
       PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
+        onStartShouldSetPanResponder: startShouldSetHandler,
         // onMoveShouldSetPanResponderCapture: () => true,
         onPanResponderMove: moveEventHandler,
         onPanResponderGrant: grantEventHandler,
@@ -306,16 +332,16 @@ const DnDableContainer = <T, U extends object>(
     if (viewRef?.current) {
       // console.log('viewRef', props.keyValue);
       viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-        // console.log(
-        //   'viewRef',
-        //   props.keyValue,
-        //   x,
-        //   y,
-        //   width,
-        //   height,
-        //   pageX,
-        //   pageY,
-        // );
+        console.log(
+          'viewRef',
+          props.keyValue,
+          x,
+          y,
+          width,
+          height,
+          pageX,
+          pageY,
+        );
         setDroppableInformation((prev) => {
           const prevEventHandlers = prev[props.keyValue];
           return {
@@ -344,11 +370,12 @@ const DnDableContainer = <T, U extends object>(
     resetStyleParams,
     setDroppableInformation,
     viewRef,
+    props.item,
   ]);
   React.useEffect(() => {
     registerDroppableInformation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewRef, reloadLayoutSwitch]);
+  }, [viewRef, reloadLayoutSwitch, props.item]);
 
   // console.log('dragging', props.keyValue, dragging);
   // console.log('rendered', props.keyValue, droppableInformation);
