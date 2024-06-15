@@ -29,6 +29,7 @@ stories
 .vscode
 assets
 demo
+*.tgz
 
 .prettierrc
 .eslintrc
