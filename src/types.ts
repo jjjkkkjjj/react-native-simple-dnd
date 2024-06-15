@@ -75,7 +75,7 @@ export interface DnDType<T, U extends object> {
   containerStyle?: StyleProp<ViewStyle>;
 
   /** The child component or functional component */
-  children?: ((_insideParams?: U) => React.ReactElement) | React.ReactElement;
+  children?: ((_styleParams?: U) => React.ReactElement) | React.ReactElement;
 }
 
 export interface DroppableInformation<T, U extends object> {
