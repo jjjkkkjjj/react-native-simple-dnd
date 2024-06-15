@@ -6,12 +6,13 @@ import {
   Animated,
   LayoutRectangle,
 } from 'react-native';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { DnDable, DnDableContainerProps } from './presenter';
 import { useDnDable } from './hooks';
 import { useDroppable, useDraggable, useReloadLayout } from '../DnDArea/hooks';
 import { DnDEventHandlers, DroppableInformation } from '../types';
-import { checkDroppable } from '../utils';
+import { checkDroppable, checkDragStartable } from '../utils';
 
 const DnDableContainer = <T, U extends object>(
   props: DnDableContainerProps<T, U>,
@@ -27,24 +28,10 @@ const DnDableContainer = <T, U extends object>(
   } = useDnDable(props.styleParams);
   const [droppableInformation, setDroppableInformation] = useDroppable();
   const [draggableInformation, setDraggableInformation] = useDraggable();
-  const { reloadLayoutSwitch, reloadLayout } = useReloadLayout();
+  const { reloadLayoutSwitch } = useReloadLayout();
   const startShouldSetHandler = React.useCallback(
     (e: GestureResponderEvent, _gesture: PanResponderGestureState): boolean => {
       const { pageX: x, pageY: y } = e.nativeEvent;
-      const layout: LayoutRectangle =
-        droppableInformation[props.keyValue].layout;
-      console.log(
-        props.keyValue,
-        Boolean(props.parentkeyValue) ||
-          !checkDroppable(
-            props.keyValue,
-            { x, y },
-            dragRelativeOffset,
-            layout,
-            droppableInformation,
-          ),
-        droppableInformation[props.keyValue],
-      );
       // TODO: Support overlapped children
       // Current implementation doesn't support overlapped DnDable children
 
@@ -54,18 +41,16 @@ const DnDableContainer = <T, U extends object>(
       // if it is parent
       //  if droppable component doesn't exist, then it is allowed to drag
       return (
-        Boolean(props.parentkeyValue) ||
-        !checkDroppable(
+        checkDragStartable(
           props.keyValue,
+          props.parentkeyValue,
           { x, y },
-          dragRelativeOffset,
-          layout,
           droppableInformation,
         )
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [droppableInformation, dragRelativeOffset],
+    [droppableInformation],
   );
   const grantEventHandler = React.useCallback(
     (_e: GestureResponderEvent, _gesture: PanResponderGestureState) => {
@@ -344,16 +329,16 @@ const DnDableContainer = <T, U extends object>(
     if (viewRef?.current) {
       // console.log('viewRef', props.keyValue);
       viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-        console.log(
-          'viewRef',
-          props.keyValue,
-          x,
-          y,
-          width,
-          height,
-          pageX,
-          pageY,
-        );
+        // console.log(
+        //   'viewRef',
+        //   props.keyValue,
+        //   x,
+        //   y,
+        //   width,
+        //   height,
+        //   pageX,
+        //   pageY,
+        // );
         setDroppableInformation((prev) => {
           const prevEventHandlers = prev[props.keyValue];
           return {
@@ -389,7 +374,10 @@ const DnDableContainer = <T, U extends object>(
   }, [viewRef, reloadLayoutSwitch]);
 
   // Update item when the props.item is changed
-  React.useEffect(() => {
+  // I don't know why React.useEffect causes the infinity loop...
+  // To avoid it, I use `useDeepCompareEffect`
+  useDeepCompareEffect(() => {
+    // console.log('called', props.keyValue, props.item);
     setDroppableInformation((prev) => {
       const prevInfo = prev[props.keyValue];
       return {

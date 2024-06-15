@@ -71,3 +71,44 @@ export const checkDroppable = (
 
   return droppables.some(Boolean);
 };
+
+/**
+ * The utility function to check whther to be startable of drag or not
+ * @param draggedKeyValue The unique key for dragged component
+ * @param draggedParentKeyValue The parant's unique key for dragged component
+ * @param point The current point relative to the DnDArea
+ * @param droppableInformation The droppable information
+ * @returns Whther to be startable of drag or not
+ */
+export const checkDragStartable = (
+  draggedKeyValue: string,
+  draggedParentKeyValue: string | undefined,
+  point: { x: number; y: number },
+  droppableInformation: DroppableInformationManager,
+): boolean => {
+  const contained = Object.keys(droppableInformation).map((keyValue) => {
+    if (keyValue === draggedKeyValue || keyValue === draggedParentKeyValue) {
+      return false;
+    }
+    const layout: LayoutRectangle = droppableInformation[keyValue].layout;
+    // console.log(keyValue, layout);
+    // Check Overlap
+    const topLeft = {
+      x: layout.x,
+      y: layout.y,
+    };
+    const bottomRight = {
+      x: layout.x + layout.width,
+      y: layout.y + layout.height,
+    };
+    const contained =
+      topLeft.x <= point.x &&
+      topLeft.y <= point.y &&
+      bottomRight.x >= point.x &&
+      bottomRight.y >= point.y;
+    return contained;
+  });
+  // console.log(draggedKeyValue, contained, point);
+
+  return !contained.some(Boolean);
+};
