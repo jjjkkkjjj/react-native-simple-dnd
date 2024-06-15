@@ -27,12 +27,24 @@ const DnDableContainer = <T, U extends object>(
   } = useDnDable(props.styleParams);
   const [droppableInformation, setDroppableInformation] = useDroppable();
   const [draggableInformation, setDraggableInformation] = useDraggable();
-  const { reloadLayoutSwitch } = useReloadLayout();
+  const { reloadLayoutSwitch, reloadLayout } = useReloadLayout();
   const startShouldSetHandler = React.useCallback(
     (e: GestureResponderEvent, _gesture: PanResponderGestureState): boolean => {
       const { pageX: x, pageY: y } = e.nativeEvent;
       const layout: LayoutRectangle =
         droppableInformation[props.keyValue].layout;
+      console.log(
+        props.keyValue,
+        Boolean(props.parentkeyValue) ||
+          !checkDroppable(
+            props.keyValue,
+            { x, y },
+            dragRelativeOffset,
+            layout,
+            droppableInformation,
+          ),
+        droppableInformation[props.keyValue],
+      );
       // TODO: Support overlapped children
       // Current implementation doesn't support overlapped DnDable children
 
@@ -370,12 +382,26 @@ const DnDableContainer = <T, U extends object>(
     resetStyleParams,
     setDroppableInformation,
     viewRef,
-    props.item,
   ]);
   React.useEffect(() => {
     registerDroppableInformation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewRef, reloadLayoutSwitch, props.item]);
+  }, [viewRef, reloadLayoutSwitch]);
+
+  // Update item when the props.item is changed
+  React.useEffect(() => {
+    setDroppableInformation((prev) => {
+      const prevInfo = prev[props.keyValue];
+      return {
+        ...prev,
+        [props.keyValue]: {
+          ...prevInfo,
+          item: props.item,
+        },
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.item]);
 
   // console.log('dragging', props.keyValue, dragging);
   // console.log('rendered', props.keyValue, droppableInformation);

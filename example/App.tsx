@@ -2,20 +2,49 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { DnDArea, DnDable, DnDItemType } from 'react-native-simple-dnd';
 
+interface ChildItem {
+  type: 'child';
+  bgColor: string;
+  title: string;
+  position: { x: number; y: number };
+}
+
 interface ParentItem {
   type: 'parent';
   bgColor: string;
   position: { x: number; y: number };
+  child: ChildItem;
 }
 
+interface ChildItemType extends DnDItemType<ChildItem> {}
 interface ParentItemType extends DnDItemType<ParentItem> {}
 
 export default function App() {
   const [parentItems, setParentItems] = React.useState<{
     [key: string]: ParentItem;
   }>({
-    '1': { type: 'parent', bgColor: 'blue', position: { x: 0, y: 0 } },
-    '2': { type: 'parent', bgColor: 'red', position: { x: 50, y: 200 } },
+    '1': {
+      type: 'parent',
+      bgColor: 'blue',
+      position: { x: 0, y: 0 },
+      child: {
+        type: 'child',
+        bgColor: 'purple',
+        title: '1',
+        position: { x: 0, y: 0 },
+      },
+    },
+    '2': {
+      type: 'parent',
+      bgColor: 'red',
+      position: { x: 50, y: 200 },
+      child: {
+        type: 'child',
+        bgColor: 'purple',
+        title: '2',
+        position: { x: 10, y: 10 },
+      },
+    },
   });
   console.log(parentItems);
 
@@ -24,14 +53,15 @@ export default function App() {
       <View style={styles.container}>
         <DnDArea>
           {Object.keys(parentItems).map((keyValue, index) => {
-            const item = parentItems[keyValue];
+            const parentItem = parentItems[keyValue];
+            const childItem = parentItem.child;
             return (
               <DnDable
                 key={`parent-${index}`}
                 keyValue={keyValue}
-                x={item.position.x}
-                y={item.position.y}
-                item={item}
+                x={parentItem.position.x}
+                y={parentItem.position.y}
+                item={parentItem}
                 eventHandlers={{
                   // onDraggedItemHovered: (draggedItem) =>
                   //   console.log('hovered', draggedItem),
@@ -69,22 +99,69 @@ export default function App() {
                   style={{
                     width: 100,
                     height: 100,
-                    backgroundColor: item.bgColor,
+                    backgroundColor: parentItem.bgColor,
                   }}
                 >
                   <DnDable
-                    keyValue="child1"
-                    parentkeyValue="1"
-                    x={30}
-                    y={10}
+                    keyValue={`child-${keyValue}`}
+                    parentkeyValue={keyValue}
+                    x={childItem.position.x}
+                    y={childItem.position.y}
                     zIndex={100}
-                    styleParams={{ bgColor: 'purple' }}
+                    item={{ ...childItem, parentKey: keyValue }}
+                    styleParams={{ bgColor: childItem.bgColor }}
                     eventHandlers={{
                       onDragStart: () => console.log('dragstart'),
                       onDragStartForStyleParams: () => ({ bgColor: 'yellow' }),
                       onDraggedItemHoveredForStyleParams: () => ({
                         bgColor: 'black',
                       }),
+                      onDropped: (
+                        draggedItem?: DnDItemType<
+                          ChildItem & { parentKey: string }
+                        >,
+                        droppedItem?: DnDItemType<
+                          ChildItem & { parentKey: string }
+                        >,
+                      ) => {
+                        if (!(draggedItem && droppedItem)) {
+                          return;
+                        }
+                        if (
+                          !(
+                            draggedItem.item?.type === 'child' &&
+                            droppedItem.item?.type === 'child'
+                          )
+                        ) {
+                          return;
+                        }
+                        console.log('dropped', draggedItem, droppedItem);
+                        const {
+                          item: {
+                            parentKey: draggedKeyValue,
+                            ...draggedChildItem
+                          },
+                        } = draggedItem;
+                        const {
+                          item: {
+                            parentKey: droppedKeyValue,
+                            ...droppedChildItem
+                          },
+                        } = droppedItem;
+                        const draggedParentItem = parentItems[draggedKeyValue];
+                        const droppedParentItem = parentItems[droppedKeyValue];
+                        setParentItems((prev) => ({
+                          ...prev,
+                          [draggedKeyValue]: {
+                            ...draggedParentItem,
+                            child: { ...droppedChildItem },
+                          },
+                          [droppedKeyValue]: {
+                            ...droppedParentItem,
+                            child: { ...draggedChildItem },
+                          },
+                        }));
+                      },
                     }}
                   >
                     {(styleParams) => (
@@ -93,8 +170,12 @@ export default function App() {
                           width: 50,
                           height: 50,
                           backgroundColor: styleParams?.bgColor,
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
-                      ></View>
+                      >
+                        <Text>{childItem.title}</Text>
+                      </View>
                     )}
                   </DnDable>
                 </View>
