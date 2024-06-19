@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-dnd",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
@@ -15,7 +15,13 @@
   "keywords": [
     "React Native",
     "Drag and Drop",
-    "DnD"
+    "DnD",
+    "simple Drag and Drop",
+    "simple DnD",
+    "enhanced Drag and Drop",
+    "enhanced DnD",
+    "nested Drag and Drop",
+    "nested DnD"
   ],
   "repository": {
     "type": "git",
