@@ -32,9 +32,10 @@ This component is needed above the `DnDable`. `DnDArea` manages all the child `D
 
 `*` is required.
 
-| props        | type              | description                          |
-| :----------- | :---------------- | :----------------------------------- |
-| \*`children` | `React.ReactNode` | Any components including `<DnDable>` |
+| props         | type              | description                                                                                 |
+| :------------ | :---------------- | :------------------------------------------------------------------------------------------ |
+| \*`keyValues` | `Array<string>`   | The DnDable's unique keys. These are managed inside the DnDArea to avoid too much rendering |
+| \*`children`  | `React.ReactNode` | Any components including `<DnDable>`                                                        |
 
 Note: This component manages the global state by recoil package. DON'T use the below atom's key in your app.
 
@@ -80,7 +81,6 @@ When you enclose `DnDable` with the components, you can drag and drop them!
 | `onDropped`                             | `draggedItem: DnDItemType<any>` The dragged item<br>`droppedItem: DnDItemType<T>` The dropped item (This component's item)                                                   | The function to be called when the dragging component is dropped into droppable component             |
 
 Note: The `styleParams` is managed inside the `DnDable`. That's why you can pass the functional component like this;
-
 
 ```typescript
 <DnDable

@@ -10,7 +10,12 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { DnDable, DnDableContainerProps } from './presenter';
 import { useDnDable } from './hooks';
-import { useDroppable, useDraggable, useReloadLayout } from '../DnDArea/hooks';
+import {
+  useDroppable,
+  useDraggable,
+  useDnDLazyInformation,
+  useReloadLayout,
+} from '../DnDArea/hooks';
 import { DnDEventHandlers, DroppableInformation } from '../types';
 import { checkDroppable, checkDragStartable } from '../utils';
 
@@ -26,8 +31,14 @@ const DnDableContainer = <T, U extends object>(
     dragRelativeOffset,
     setDragRelativeOffset,
   } = useDnDable(props.styleParams);
-  const [droppableInformation, setDroppableInformation] = useDroppable();
-  const [draggableInformation, setDraggableInformation] = useDraggable();
+  const { setDroppableInformation } = useDroppable();
+  const { setDraggableInformation } = useDraggable();
+  const {
+    droppableInformation,
+    draggableInformation,
+    setRegisterInformation,
+    updateLazyStates,
+  } = useDnDLazyInformation();
   const { reloadLayoutSwitch } = useReloadLayout();
   const startShouldSetHandler = React.useCallback(
     (e: GestureResponderEvent, _gesture: PanResponderGestureState): boolean => {
@@ -40,13 +51,11 @@ const DnDableContainer = <T, U extends object>(
       //  if droppable component exists, then it is allowed to drag
       // if it is parent
       //  if droppable component doesn't exist, then it is allowed to drag
-      return (
-        checkDragStartable(
-          props.keyValue,
-          props.parentkeyValue,
-          { x, y },
-          droppableInformation,
-        )
+      return checkDragStartable(
+        props.keyValue,
+        props.parentkeyValue,
+        { x, y },
+        droppableInformation,
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +88,7 @@ const DnDableContainer = <T, U extends object>(
           [props.keyValue]: { ...draggedInformation, dragging: true },
         };
       });
+      updateLazyStates();
       // Event Handling
       props.eventHandlers?.onDragStart?.();
       // Event Handling for Style Parameters
@@ -123,6 +133,7 @@ const DnDableContainer = <T, U extends object>(
           [props.keyValue]: { ...draggedInformation, dragging: false },
         };
       });
+      updateLazyStates();
       // Event Handling
       props.eventHandlers?.onDragEnd?.();
       // Event Handling for Style Parameters
@@ -358,6 +369,7 @@ const DnDableContainer = <T, U extends object>(
             },
           };
         });
+        setRegisterInformation((prev) => ({ ...prev, [props.keyValue]: true }));
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -388,9 +400,12 @@ const DnDableContainer = <T, U extends object>(
         },
       };
     });
+    setRegisterInformation((prev) => ({ ...prev, [props.keyValue]: true }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.item]);
-
+  // if (props.keyValue === 'player-0') {
+  //   console.log('rendered');
+  // }
   // console.log('dragging', props.keyValue, dragging);
   // console.log('rendered', props.keyValue, droppableInformation);
   // console.log('offset', dragRelativeOffset, offset);

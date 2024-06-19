@@ -2,7 +2,12 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 
 import { DnDArea, DnDAreaContainerProps } from './presenter';
-import { useDnDAreaAdmin, useDnDArea, useDragAndDrop } from './hooks';
+import {
+  useDnDAreaAdmin,
+  useRegisterInformation,
+  useDnDRealtimeInformation,
+  useDragAndDrop,
+} from './hooks';
 
 const DnDAreaContainer = (props: DnDAreaContainerProps) => {
   useDnDAreaAdmin();
@@ -14,9 +19,18 @@ const DnDAreaContainer = (props: DnDAreaContainerProps) => {
   );
 };
 
-const Wrapper = (props) => {
-  useDnDArea();
+const Wrapper = (props: DnDAreaContainerProps) => {
+  useDnDRealtimeInformation();
+  const { setRegisterInformation } = useRegisterInformation();
   const { reloadLayout } = useDragAndDrop();
+
+  React.useEffect(() => {
+    const newValues = Object.fromEntries(
+      props.keyValues.map((value) => [value, false]),
+    );
+    setRegisterInformation((prev) => ({ ...prev, ...newValues }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <DnDArea {...props} onLayout={() => reloadLayout()} />;
 };

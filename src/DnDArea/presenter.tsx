@@ -11,6 +11,8 @@ export const DnDArea = (props: DnDAreaProps) => {
 };
 
 export interface DnDAreaContainerProps {
+  /** The DnDable's unique keys. These are managed inside the DnDArea to avoid too much rendering */
+  keyValues: Array<string>;
   /** Child components */
   children?: React.ReactNode;
 }

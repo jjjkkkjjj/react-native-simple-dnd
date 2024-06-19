@@ -51,7 +51,12 @@ export default function App() {
   return (
     <View style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <DnDArea>
+        <DnDArea
+          keyValues={Object.keys(parentItems).flatMap((keyValue) => [
+            keyValue,
+            `child-${keyValue}`,
+          ])}
+        >
           {Object.keys(parentItems).map((keyValue, index) => {
             const parentItem = parentItems[keyValue];
             const childItem = parentItem.child;
@@ -199,7 +204,7 @@ const Test = (_props: any) => {
   return (
     <View style={{ marginTop: 20 }}>
       <View style={styles.container}>
-        <DnDArea>
+        <DnDArea keyValues={['1', 'child1', '2', 'child2']}>
           <DnDable
             keyValue={'1'}
             x={0}

@@ -109,7 +109,9 @@ export interface DraggableInformationManager {
   [key: string]: DraggableInformation;
 }
 
-export interface DnDAreaManager {}
+export interface DnDAreaManager {
+  [key: string]: boolean;
+}
 
 //=========== For user ===========//
 export interface DnDItemType<T> {
