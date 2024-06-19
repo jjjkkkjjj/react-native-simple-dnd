@@ -1,9 +1,0 @@
-{
-  "version": "v1",
-  "packages": {
-    "react-native-simple-dnd": {
-      "signature": "2e6ca8ae71806185efe467c3cbfbfb89",
-      "file": true
-    }
-  }
-}
